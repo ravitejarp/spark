@@ -655,11 +655,12 @@
           </exclusion>
 	</exclusions>
       </dependency>
-      <!--dependency>
+      <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty</artifactId>
         <version>3.9.9.Final</version>
-      </dependency -->
+	<scope>provided</scope>
+      </dependency>
       <dependency>
         <groupId>org.apache.derby</groupId>
         <artifactId>derby</artifactId>
