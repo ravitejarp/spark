@@ -5,6 +5,11 @@ appender.console.name = console
 appender.console.layout.type = PatternLayout
 appender.console.layout.pattern = [%d{ISO8601}][%-5p][%-25c{1.}] [%node_name]%marker %m%n
 
+logger.console.name = org.apache.spark.repl.Main
+logger.console.level = warn
+logger.console.additivity = false
+logger.console.appenderRef = Console
+
 logger.console.name = org.spark_project.jetty
 logger.console.level = warn
 logger.console.additivity = false
@@ -26,6 +31,21 @@ logger.console.additivity = false
 logger.console.appenderRef = Console
 
 logger.console.name = org.apache.parquet
+logger.console.level = error
+logger.console.additivity = false
+logger.console.appenderRef = Console
+
+logger.console.name = parquet
+logger.console.level = error
+logger.console.additivity = false
+logger.console.appenderRef = Console
+
+logger.console.name = org.apache.hadoop.hive.metastore.RetryingHMSHandler
+logger.console.level = fatal
+logger.console.additivity = false
+logger.console.appenderRef = Console
+
+logger.console.name = org.apache.hadoop.hive.ql.exec.FunctionRegistry
 logger.console.level = error
 logger.console.additivity = false
 logger.console.appenderRef = Console
