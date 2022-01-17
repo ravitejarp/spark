@@ -68,7 +68,7 @@ private[spark] case class SSLOptions(
    */
   def createJettySslContextFactory(): Option[SslContextFactory] = {
     if (enabled) {
-      val sslContextFactory = new SslContextFactory()
+      val sslContextFactory = new SslContextFactory().Server()
 
       keyStore.foreach(file => sslContextFactory.setKeyStorePath(file.getAbsolutePath))
       keyStorePassword.foreach(sslContextFactory.setKeyStorePassword)
@@ -83,8 +83,6 @@ private[spark] case class SSLOptions(
          * client certificates. This would help enable mTLS authentication.
          */
         sslContextFactory.setNeedClientAuth(needClientAuth)
-        sslContextFactory.setTrustAll(true)
-        sslContextFactory.setEndpointIdentificationAlgorithm(null)  
       }
       protocol.foreach(sslContextFactory.setProtocol)
       if (supportedAlgorithms.nonEmpty) {
