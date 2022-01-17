@@ -83,6 +83,7 @@ private[spark] case class SSLOptions(
          * client certificates. This would help enable mTLS authentication.
          */
         sslContextFactory.setNeedClientAuth(needClientAuth)
+        sslContextFactory.setEndpointIdentificationAlgorithm(null)  
       }
       protocol.foreach(sslContextFactory.setProtocol)
       if (supportedAlgorithms.nonEmpty) {
