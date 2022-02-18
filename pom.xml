@@ -233,6 +233,7 @@
     <!-- Needed for consistent times -->
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss z</maven.build.timestamp.format>
     <netty.version>4.1.61.Final</netty.version>
+    <json-smart.version>2.4.1</json-smart.version>
   </properties>
   <repositories>
     <repository>
@@ -327,6 +328,11 @@
       <groupId>com.novocode</groupId>
       <artifactId>junit-interface</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.minidev</groupId>
+      <artifactId>json-smart</artifactId>
+      <version>${json-smart.version}</version>
     </dependency>
   </dependencies>
   <dependencyManagement>
