@@ -143,6 +143,7 @@
     <chill.version>0.10.0</chill.version>
     <ivy.version>2.5.0</ivy.version>
     <oro.version>2.0.8</oro.version>
+    <json-smart.version>2.4.1</json-smart.version>
     <!--
     If you changes codahale.metrics.version, you also need to change
     the link to metrics.dropwizard.io in docs/monitoring.md.
@@ -410,6 +411,11 @@
       <groupId>com.novocode</groupId>
       <artifactId>junit-interface</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.minidev</groupId>
+      <artifactId>json-smart</artifactId>
+      <version>${json-smart.version}</version>
     </dependency>
   </dependencies>
   <dependencyManagement>
