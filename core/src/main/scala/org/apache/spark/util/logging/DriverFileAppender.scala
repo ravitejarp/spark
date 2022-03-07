@@ -113,7 +113,7 @@ private[spark] class DriverFileAppender(inputStream: InputStream, file: File, bu
 private[spark] object DriverFileAppender extends Logging {
 
   /** Create the right appender based on Spark configuration */
-  def apply(inputStream: InputStream, file: File, conf: SparkConf): FileAppender = {
+  def apply(inputStream: InputStream, file: File, conf: SparkConf): DriverFileAppender = {
 
     import RollingFileAppender._
 
@@ -121,7 +121,7 @@ private[spark] object DriverFileAppender extends Logging {
     val driverRollingSizeBytes = conf.get(DRIVER_SIZE_PROPERTY, DRIVER_STRATEGY_DEFAULT)
     val driverRollingInterval = conf.get(DRIVER_INTERVAL_PROPERTY, DRIVER_INTERVAL_DEFAULT)
 
-    def createTimeBasedAppenderForDriver(): FileAppender = {
+    def createTimeBasedAppenderForDriver(): DriverFileAppender = {
       val validatedParams: Option[(Long, String)] = driverRollingInterval match {
         case "daily" =>
           logInfo(s"Rolling executor logs enabled for $file with daily rolling")
@@ -145,11 +145,11 @@ private[spark] object DriverFileAppender extends Logging {
           new RollingFileAppender(
             inputStream, file, new TimeBasedRollingPolicy(interval, pattern), conf)
       }.getOrElse {
-        new FileAppender(inputStream, file)
+        new DriverFileAppender(inputStream, file)
       }
     }
 
-    def createSizeBasedAppenderForDriver(): FileAppender = {
+    def createSizeBasedAppenderForDriver(): DriverFileAppender = {
       driverRollingSizeBytes match {
         case IntParam(bytes) =>
           logInfo(s"Rolling executor logs enabled for $file with rolling every $bytes bytes")
@@ -157,13 +157,13 @@ private[spark] object DriverFileAppender extends Logging {
         case _ =>
           logWarning(
             s"Illegal size [$driverRollingSizeBytes] for rolling executor logs, rolling logs not enabled")
-          new FileAppender(inputStream, file)
+          new DriverFileAppender(inputStream, file)
       }
     }
 
     driverRollingStrategy match {
       case "" =>
-        new FileAppender(inputStream, file)
+        new DriverFileAppender(inputStream, file)
       case "time" =>
         createTimeBasedAppenderForDriver()
       case "size" =>
@@ -172,7 +172,7 @@ private[spark] object DriverFileAppender extends Logging {
         logWarning(
           s"Illegal strategy [$driverRollingStrategy] for rolling executor logs, " +
             s"rolling logs not enabled")
-        new FileAppender(inputStream, file)
+        new DriverFileAppender(inputStream, file)
     }
   }
 }
