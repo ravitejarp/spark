@@ -174,6 +174,16 @@ private[spark] object RollingFileAppender {
   val DEFAULT_BUFFER_SIZE = 8192
   val ENABLE_COMPRESSION = "spark.executor.logs.rolling.enableCompression"
 
+  val DRIVER_STRATEGY_PROPERTY = "spark.driver.logs.rolling.strategy"
+  val DRIVER_STRATEGY_DEFAULT = ""
+  val DRIVER_INTERVAL_PROPERTY = "spark.driver.logs.rolling.time.interval"
+  val DRIVER_INTERVAL_DEFAULT = "daily"
+  val DRIVER_SIZE_PROPERTY = "spark.driver.logs.rolling.maxSize"
+  val DRIVER_SIZE_DEFAULT = (1024 * 1024).toString
+  val DRIVER_RETAINED_FILES_PROPERTY = "spark.driver.logs.rolling.maxRetainedFiles"
+  val DRIVER_DEFAULT_BUFFER_SIZE = 8192
+  val DRIVER_ENABLE_COMPRESSION = "spark.driver.logs.rolling.enableCompression"
+
   val GZIP_LOG_SUFFIX = ".gz"
 
   /**
