@@ -27,7 +27,7 @@ import org.apache.spark.util.{IntParam, Utils}
  * Continuously appends the data from an input stream into the given file.
  */
 private[spark] class DriverFileAppender(inputStream: InputStream, file: File, bufferSize: Int = 8192)
-  extends Logging {
+  extends FileAppender {
   @volatile private var outputStream: FileOutputStream = null
   @volatile private var markedForStop = false     // has the appender been asked to stopped
 
@@ -142,7 +142,7 @@ private[spark] object DriverFileAppender extends Logging {
       }
       validatedParams.map {
         case (interval, pattern) =>
-          new RollingFileAppender(
+          new DriverRollingFileAppender(
             inputStream, file, new TimeBasedRollingPolicy(interval, pattern), conf)
       }.getOrElse {
         new DriverFileAppender(inputStream, file)
@@ -153,7 +153,7 @@ private[spark] object DriverFileAppender extends Logging {
       driverRollingSizeBytes match {
         case IntParam(bytes) =>
           logInfo(s"Rolling executor logs enabled for $file with rolling every $bytes bytes")
-          new RollingFileAppender(inputStream, file, new SizeBasedRollingPolicy(bytes), conf)
+          new DriverRollingFileAppender(inputStream, file, new SizeBasedRollingPolicy(bytes), conf)
         case _ =>
           logWarning(
             s"Illegal size [$driverRollingSizeBytes] for rolling executor logs, rolling logs not enabled")
@@ -176,5 +176,4 @@ private[spark] object DriverFileAppender extends Logging {
     }
   }
 }
-
 
