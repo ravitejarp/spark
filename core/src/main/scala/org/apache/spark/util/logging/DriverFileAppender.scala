@@ -27,7 +27,7 @@ import org.apache.spark.util.{IntParam, Utils}
  * Continuously appends the data from an input stream into the given file.
  */
 private[spark] class DriverFileAppender(inputStream: InputStream, file: File, bufferSize: Int = 8192)
-  extends FileAppender {
+  extends Logging {
   @volatile private var outputStream: FileOutputStream = null
   @volatile private var markedForStop = false     // has the appender been asked to stopped
 
