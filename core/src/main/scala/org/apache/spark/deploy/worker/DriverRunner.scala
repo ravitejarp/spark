@@ -29,7 +29,7 @@ import org.apache.spark.deploy.master.DriverState
 import org.apache.spark.deploy.master.DriverState.DriverState
 import org.apache.spark.internal.Logging
 import org.apache.spark.rpc.RpcEndpointRef
-import org.apache.spark.util.logging.FileAppender
+import org.apache.spark.util.logging.DriverFileAppender
 import org.apache.spark.util.{Clock, ShutdownHookManager, SystemClock, Utils}
 
 /**
@@ -53,8 +53,8 @@ private[deploy] class DriverRunner(
   // Populated once finished
   @volatile private[worker] var finalState: Option[DriverState] = None
   @volatile private[worker] var finalException: Option[Exception] = None
-  private var stdoutAppender: FileAppender = null
-  private var stderrAppender: FileAppender = null
+  private var stdoutAppender: DriverFileAppender = null
+  private var stderrAppender: DriverFileAppender = null
 
   // Timeout to wait for when trying to terminate a driver.
   private val DRIVER_TERMINATE_TIMEOUT_MS =
@@ -197,13 +197,13 @@ private[deploy] class DriverRunner(
 
       // Redirect its stdout and stderr to files
       val stdout = new File(baseDir, "stdout")
-      stdoutAppender = FileAppender(process.getInputStream, stdout, conf)
+      stdoutAppender = DriverFileAppender(process.getInputStream, stdout, conf)
 
       val formattedCommand = builder.command.asScala.mkString("\"", "\" \"", "\"")
       val header = "Launch Command: %s\n%s\n\n".format(formattedCommand, "=" * 40)
       val stderr = new File(baseDir, "stderr")
       Files.write(header, stderr, StandardCharsets.UTF_8)
-      stderrAppender = FileAppender(process.getErrorStream, stderr, conf)
+      stderrAppender = DriverFileAppender(process.getErrorStream, stderr, conf)
       // Redirect stdout and stderr to files
 //      val stdout = new File(baseDir, "stdout")
 //      CommandUtils.redirectStream(process.getInputStream, stdout)
